@@ -1,4 +1,4 @@
-const { User } = require("../models/user.model");
+const { User } = require('../models/user.model');
 
 const getAllUsers = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ const getUserById = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ status: "error", message: "user not found given that id" });
+        .json({ status: 'error', message: 'user not found given that id' });
     }
     res.status(200).json({ user });
   } catch (error) {
@@ -44,10 +44,10 @@ const updateUser = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ status: "error", message: "user not found given that id" });
+        .json({ status: 'error', message: 'user not found given that id' });
     }
 
-    res.status(200).json({ status: "success" });
+    res.status(200).json({ status: 'success' });
   } catch (error) {
     console.log(error);
   }
@@ -60,11 +60,11 @@ const deleteUser = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ status: "error", message: "user not found given that id" });
+        .json({ status: 'error', message: 'user not found given that id' });
     }
-    await user.update({ status: "deleted" });
+    await user.update({ status: 'deleted' });
     res.status(200).json({
-      status: "success",
+      status: 'success',
     });
   } catch (error) {
     console.log(error);
