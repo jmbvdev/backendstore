@@ -1,7 +1,8 @@
 const express = require("express");
 
+//init express app
+
 const app = express();
-const PORT = 4000;
 
 //Routers
 const { usersRouter } = require("./routes/users.routes");
@@ -25,6 +26,7 @@ db.sync()
   .then(() => console.log("Databse sync"))
   .catch((err) => console.log(err));
 
+const PORT = 4000;
 app.listen(PORT, () => {
   console.log("express runnning");
 });

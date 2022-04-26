@@ -14,4 +14,54 @@ const createRepair = async (req, res) => {
   });
 };
 
-module.exports = { getAllrepairs, createRepair };
+const getRepairById = async (req,res)=>{
+  try {
+    const {id}=req.params
+    const repair= await Repair.findOne({where:{id}})
+    if (!repair) {
+      return res
+      .status(404)
+      .json({status:"error", message:"repair not found given that id"}) 
+    }
+    res.status(200).json({repair})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const updateRepair = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const repair = await Repair.update({ status: "completed"}, { where: { id } });
+    if (!repair) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "repair not found given that id" });
+    }
+    res.status(200).json({ status: "success" });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteRepair = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const repair = await Repair.findOne({ where: { id } });
+    if (!repair) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "repair not found given that id" });
+    }
+    await repair.update({ status: "cancelled" });
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getAllrepairs, createRepair, getRepairById, updateRepair, deleteRepair };
