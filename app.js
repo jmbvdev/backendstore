@@ -15,18 +15,24 @@ const { db } = require('./utils/database');
 app.use(express.json());
 
 //Endpoints
+
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/repairs', repairsRouter);
+
+//Authenticate databse credentials
 
 db.authenticate()
   .then(() => console.log('Databse autenticated'))
   .catch(err => console.log(err));
 
+//sync sequilize models
 db.sync()
   .then(() => console.log('Databse sync'))
   .catch(err => console.log(err));
 
-const PORT = 4000;
+//spin up server
+const PORT = process.env.PORT || 4000;
+
 app.listen(PORT, () => {
   console.log('express runnning');
 });

@@ -1,4 +1,9 @@
 const express = require('express');
+
+//middlewares
+const { repairExists } = require('../middlewares/repairs.middlewares');
+
+//controllers
 const {
   getAllrepairs,
   createRepair,
@@ -13,8 +18,8 @@ router.route('/').get(getAllrepairs).post(createRepair);
 
 router
   .route('/:id')
-  .get(getRepairById)
-  .patch(updateRepair)
-  .delete(deleteRepair);
+  .get(repairExists, getRepairById)
+  .patch(repairExists, updateRepair)
+  .delete(repairExists, deleteRepair);
 
 module.exports = { repairsRouter: router };
