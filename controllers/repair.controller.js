@@ -1,15 +1,35 @@
 const { Repair } = require('../models/repair.model');
+const { validationResult } = require('express-validator');
 
 const getAllrepairs = async (req, res) => {
-  const repairs = await Repair.findAll();
-  res.status(200).json({
-    repairs,
-  });
+  try {
+    const repairs = await Repair.findAll();
+    res.status(200).json({
+      repairs,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 const createRepair = async (req, res) => {
-  const { date, userId } = req.body;
-  const newRepair = await Repair.create({ date, userId });
-  res.status(201).json({newRepair});
+  try {
+    const { date, userId } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const messages = errors.array().map(({ msg }) => msg);
+
+      const errorsMsg = messages.join('. ');
+
+      return res.status(400).json({
+        status: 'error',
+        messages: errorsMsg,
+      });
+    }
+    const newRepair = await Repair.create({ date, userId });
+    res.status(201).json({ newRepair });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getRepairById = async (req, res) => {

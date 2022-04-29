@@ -1,5 +1,5 @@
 const express = require('express');
-
+const { body } = require('express-validator');
 //middlewares
 const { repairExists } = require('../middlewares/repairs.middlewares');
 
@@ -14,7 +14,13 @@ const {
 
 const router = express.Router();
 
-router.route('/').get(getAllrepairs).post(createRepair);
+router
+  .route('/')
+  .get(getAllrepairs)
+  .post(
+    body('date').notEmpty().withMessage('Date cannont be empty'),
+    createRepair
+  );
 
 router
   .route('/:id')
