@@ -13,7 +13,7 @@ const getAllrepairs = async (req, res) => {
 };
 const createRepair = async (req, res) => {
   try {
-    const { date, userId } = req.body;
+    const { date, computerNumber, comments, userId } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const messages = errors.array().map(({ msg }) => msg);
@@ -25,7 +25,12 @@ const createRepair = async (req, res) => {
         messages: errorsMsg,
       });
     }
-    const newRepair = await Repair.create({ date, userId });
+    const newRepair = await Repair.create({
+      date,
+      computerNumber,
+      comments,
+      userId,
+    });
     res.status(201).json({ newRepair });
   } catch (error) {
     console.log(error);

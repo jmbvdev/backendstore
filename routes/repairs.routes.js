@@ -18,7 +18,15 @@ router
   .route('/')
   .get(getAllrepairs)
   .post(
-    body('date').notEmpty().withMessage('Date cannont be empty'),
+    body('date')
+      .notEmpty()
+      .withMessage('Date cannont be empty')
+      .isDate()
+      .withMessage('must be a valid date'),
+    body('computerNumber')
+      .notEmpty()
+      .withMessage('ComputerNumber cannont be empty'),
+    body('comments').notEmpty().withMessage('Comments cannont be empty'),
     createRepair
   );
 
