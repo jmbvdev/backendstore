@@ -8,10 +8,8 @@ const getAllrepairs = async (req, res) => {
 };
 const createRepair = async (req, res) => {
   const { date, userId } = req.body;
-  const newRepair = Repair.create({ date, userId });
-  res.status(201).json({
-    newRepair,
-  });
+  const newRepair = await Repair.create({ date, userId });
+  res.status(201).json({newRepair});
 };
 
 const getRepairById = async (req, res) => {
