@@ -1,9 +1,12 @@
 const { Repair } = require('../models/repair.model');
 const { validationResult } = require('express-validator');
+const {User}=require("../models/user.model")
 
 const getAllrepairs = async (req, res) => {
   try {
-    const repairs = await Repair.findAll();
+    const repairs = await Repair.findAll({
+      include:[{model: User}]
+    });
     res.status(200).json({
       repairs,
     });

@@ -1,5 +1,9 @@
 const express = require('express');
 
+//Models
+const {User}= require("./models/user.model")
+const {Repair}= require("./models/repair.model")
+
 //init express app
 
 const app = express();
@@ -24,6 +28,10 @@ app.use('/api/v1/repairs', repairsRouter);
 db.authenticate()
   .then(() => console.log('Databse autenticated'))
   .catch(err => console.log(err));
+
+// Establish models relations
+User.hasMany(Repair, {foreignKey:"userId"})
+Repair.belongsTo(User)
 
 //sync sequilize models
 db.sync()
