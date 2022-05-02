@@ -2,20 +2,23 @@ const { Repair } = require('../models/repair.model');
 
 const repairExists = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    
-    const repair = await Repair.findOne({ where: { id} });
+		const { id } = req.params;
 
-    if (repair.status==="cancelled") {
-      return res
-        .status(404)
-        .json({ status: 'error', message: 'Pending services not found' });
-    }
-    req.repair = repair;
-    next();
-  } catch (error) {
-    console.log(error);
-  }
+		const repair = await Repair.findOne({ where: { id, status: 'pending' } });
+
+		if (!repair) {
+			return res.status(404).json({
+				status: 'error',
+				message: 'No repair found with the given id',
+			});
+		}
+
+		res.status(200).json({
+			repair,
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports = { repairExists };
