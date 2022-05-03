@@ -1,8 +1,8 @@
 const express = require('express');
 
 //Models
-const {User}= require("./models/user.model")
-const {Repair}= require("./models/repair.model")
+const { User } = require('./models/user.model');
+const { Repair } = require('./models/repair.model');
 
 //init express app
 
@@ -30,8 +30,8 @@ db.authenticate()
   .catch(err => console.log(err));
 
 // Establish models relations
-User.hasMany(Repair, {foreignKey:"userId"})
-Repair.belongsTo(User)
+User.hasMany(Repair, { foreignKey: 'userId' });
+Repair.belongsTo(User);
 
 //sync sequilize models
 db.sync()

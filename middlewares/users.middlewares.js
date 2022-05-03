@@ -16,6 +16,4 @@ const userExists = async (req, res, next) => {
   }
 };
 
-
-
-module.exports = { userExists};
+module.exports = { userExists };

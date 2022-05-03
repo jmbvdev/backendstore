@@ -33,7 +33,7 @@ router
 router
   .route('/:id')
   .get(repairExists, getRepairById)
-  .patch(repairExists, updateRepair)
-  .delete(repairExists, deleteRepair);
+  .patch(updateRepair)
+  .delete(deleteRepair);
 
 module.exports = { repairsRouter: router };
