@@ -1,5 +1,8 @@
 const express = require('express');
 
+//Controllers
+const { globalErrorHandler } = require('./controllers/errors.controller');
+
 //Models
 const { User } = require('./models/user.model');
 const { Repair } = require('./models/repair.model');
@@ -22,6 +25,10 @@ app.use(express.json());
 
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/repairs', repairsRouter);
+
+//Global error handler
+
+app.use('*', globalErrorHandler);
 
 //Authenticate databse credentials
 
