@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 
 //Controllers
 const { globalErrorHandler } = require('./controllers/errors.controller');
@@ -20,6 +21,14 @@ const { db } = require('./utils/database');
 
 //Enable incoming Json data
 app.use(express.json());
+
+//Limit IP requests
+const limiter = rateLimit({
+  max: 10000,
+  windowMs: 1 * 60 * 60 * 1000,
+  message: 'Too many requests from this IP',
+});
+app.use(limiter);
 
 //Endpoints
 
