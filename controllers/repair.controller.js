@@ -30,7 +30,7 @@ const createRepair = catchAsync(async (req, res, next) => {
     comments,
     userId,
   });
-   await res.status(201).json({ newRepair });
+  await res.status(201).json({ newRepair });
 });
 
 const getRepairById = catchAsync(async (req, res, next) => {

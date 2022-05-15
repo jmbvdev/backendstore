@@ -1,4 +1,9 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+//generar string random
+//require('crypto').randomBytes(64).toString('hex')
 
 //Models
 const { User } = require('../models/user.model');
@@ -6,8 +11,11 @@ const { User } = require('../models/user.model');
 //Validations
 const { validationResult } = require('express-validator');
 
-//handle error
+//Utils
 const { catchAsync } = require('../utils/catchAsync');
+const { AppError } = require('../utils/appError');
+
+dotenv.config({ path: '../config.env' });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.findAll({
@@ -71,10 +79,31 @@ const deleteUser = catchAsync(async (req, res, next) => {
   });
 });
 
+const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  //Validate that user exists with given email
+  const user = await User.findOne({ where: { email, status: 'active' } });
+
+  //Compare password with database |
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return next(new AppError('Invalid Credentials', 400));
+  }
+
+  //Generate JWT
+  const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+  user.password = undefined;
+  res.status(200).json({ token, user });
+});
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
+  login,
 };

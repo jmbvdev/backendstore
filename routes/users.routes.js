@@ -2,7 +2,11 @@ const express = require('express');
 const { body } = require('express-validator');
 //middlewares
 
-const { userExists } = require('../middlewares/users.middlewares');
+const {
+  userExists,
+  protectToken,
+  protectAdmin,
+} = require('../middlewares/users.middlewares');
 
 //controllers
 const {
@@ -11,12 +15,15 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  login,
 } = require('../controllers/users.controller');
 const router = express.Router();
 
+router.post('/login', login);
+
 router
   .route('/')
-  .get(getAllUsers)
+  .get(protectToken, protectAdmin, getAllUsers)
   .post(
     body('name').notEmpty().withMessage('Name cannont be empty'),
     body('email')
@@ -35,7 +42,7 @@ router
 router
   .route('/:id')
   .get(userExists, getUserById)
-  .patch(userExists, updateUser)
-  .delete(userExists, deleteUser);
+  .patch(userExists,  updateUser)
+  .delete(userExists,  deleteUser);
 
 module.exports = { usersRouter: router };
