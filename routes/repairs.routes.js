@@ -11,6 +11,7 @@ const {
   updateRepair,
   deleteRepair,
 } = require('../controllers/repair.controller');
+const { protectAccountOwner } = require('../middlewares/users.middlewares');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router
 router
   .route('/:id')
   .get(repairExists, getRepairById)
-  .patch(updateRepair)
-  .delete(deleteRepair);
+  .patch(repairExists, protectAccountOwner, updateRepair)
+  .delete(repairExists, protectAccountOwner, deleteRepair);
 
 module.exports = { repairsRouter: router };

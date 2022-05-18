@@ -6,6 +6,7 @@ const {
   userExists,
   protectToken,
   protectAdmin,
+  protectAccountOwner,
 } = require('../middlewares/users.middlewares');
 
 //controllers
@@ -42,7 +43,7 @@ router
 router
   .route('/:id')
   .get(userExists, getUserById)
-  .patch(userExists,  updateUser)
-  .delete(userExists,  deleteUser);
+  .patch(userExists, protectAccountOwner, updateUser)
+  .delete(userExists, protectAccountOwner, deleteUser);
 
 module.exports = { usersRouter: router };
