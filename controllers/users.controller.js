@@ -11,7 +11,7 @@ const { AppError } = require('../utils/appError');
 dotenv.config({path:"./config.env"})
 
 const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.findAll();
+  const users = await User.findAll({attributes: { exclude: ['password'] }});
 
   res.status(200).json({
     users,
