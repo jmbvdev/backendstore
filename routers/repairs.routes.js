@@ -1,31 +1,43 @@
 const express = require('express');
 
 // Middlewares
-const { protectToken, protectAdmin  } = require('../middlewares/users.middlewares');
+const {
+  protectToken,
+  protectAdmin,
+} = require('../middlewares/users.middlewares');
 const { pendingRepairExists } = require('../middlewares/repairs.middlewares');
 const {
-	createRepairValidations,
-	checkValidations,
+  createRepairValidations,
+  checkValidations,
 } = require('../middlewares/validators.middleware');
 
 // Controllers
 const {
-	getAllCompletedRepairs,
-	getAllPendingRepairs,
-	createRepair,
-	getRepairById,
-	repairCancelled,
-	repairCompleted,
+  getAllCompletedRepairs,
+  getAllPendingRepairs,
+  createRepair,
+  getRepairById,
+  repairCancelled,
+  repairCompleted,
 } = require('../controllers/repairs.controller');
 
+//utils
+const { upload } = require('../utils/multer');
+
 const router = express.Router();
-router.use(protectToken)
+router.use(protectToken);
 
 router.get('/completed', getAllCompletedRepairs);
 
-router.get('/pending', protectAdmin,getAllPendingRepairs);
+router.get('/pending', getAllPendingRepairs);
 
-router.post('/', createRepairValidations, checkValidations, createRepair);
+router.post(
+	'/',
+  upload.single("imgPath"),
+  createRepairValidations,
+  checkValidations,
+  createRepair
+);
 
 router.get('/:id', protectAdmin, pendingRepairExists, getRepairById);
 
